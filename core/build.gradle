@@ -1,0 +1,22 @@
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
+
+dependencies {
+  api "com.badlogicgames.gdx:gdx:$gdxVersion"
+
+  if(enableGraalNative == 'true') {
+    implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
+  }
+}
+
+jar {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// Servidor dedicado (sem janela): gradlew core:runServer   ou   gradlew core:runServer --args="12345"
+tasks.register('runServer', JavaExec) {
+  group = 'application'
+  description = 'Inicia o servidor dedicado do Labirinto do Ratinho.'
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'com.meuprojeto.maze.server.GameServer'
+}
